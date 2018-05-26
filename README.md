@@ -7,16 +7,6 @@ If use these code to commercial software, that need to get my permition.
 
 And I want to get some work for coding, do you need I help?
 
-Contact:
-
-    QQ group:    601169305
-    
-    QQ:          2146651351
-    
-    WeiXin:      jianzhi_ai
-    
-    WeiXin:      AIChangeLife 
-
 Thanks:
 
 Used software(Not open source):
@@ -33,3 +23,13 @@ Open source code:
 
 Stanford NLP              Stanford NLP      GNU v3
 
+
+Contact:
+
+    QQ group:    601169305
+    
+    QQ:          2146651351
+    
+    WeiXin:      jianzhi_ai
+    
+    WeiXin:      AIChangeLife 
