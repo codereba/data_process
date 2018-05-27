@@ -26,10 +26,12 @@ Stanford NLP              Stanford NLP      GNU v3
 
 Contact:
 
+    WeiXin:      jianzhi_ai
+    
+    WeiXin:      AIChangeLife 
+	
     QQ group:    601169305
     
     QQ:          2146651351
     
-    WeiXin:      jianzhi_ai
-    
-    WeiXin:      AIChangeLife 
+
