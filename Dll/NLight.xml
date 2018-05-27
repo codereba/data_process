@@ -1,0 +1,1655 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NLight</name>
+    </assembly>
+    <members>
+        <member name="T:NLight.Collections.ArrayExtensions">
+            <summary>
+            Contains extension methods for arrays.
+            </summary>
+        </member>
+        <member name="M:NLight.Collections.ArrayExtensions.Insert``1(``0[],System.Int32,``0,System.Boolean)">
+            <summary>
+            Inserts a value in the specified source array.
+            </summary>
+            <typeparam name="T">The type of array elements.</typeparam>
+            <param name="source">The source array.</param>
+            <param name="index">The index where the value will be inserted.</param>
+            <param name="value">The value to insert.</param>
+            <param name="isVirtualArray">Indicates if the array is virtual, i.e. its length can be bigger than the element count.</param>
+            <returns>The resulting new array.</returns>
+        </member>
+        <member name="M:NLight.Collections.ArrayExtensions.Remove``1(``0[],``0,System.Boolean)">
+            <summary>
+            Removes a value from the specified source array.
+            </summary>
+            <typeparam name="T">The type of array elements.</typeparam>
+            <param name="source">The source array.</param>
+            <param name="value">The value to remove.</param>
+            <param name="isVirtualArray">Indicates if the array is virtual, i.e. its length can be bigger than the element count.</param>
+            <returns>The resulting new array.</returns>
+        </member>
+        <member name="M:NLight.Collections.ArrayExtensions.TryRemove``1(``0[],``0,System.Boolean,``0[]@)">
+            <summary>
+            Removes a value from the specified source array.
+            </summary>
+            <typeparam name="T">The type of array elements.</typeparam>
+            <param name="source">The source array.</param>
+            <param name="value">The value to remove.</param>
+            <param name="isVirtualArray">Indicates if the array is virtual, i.e. its length can be bigger than the element count.</param>
+            <param name="output">The resulting new array if <paramref name="value"/> was found; otherwise <paramref name="source"/>.</param>
+            <returns><c>true</c> if the value was found; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:NLight.Collections.ArrayExtensions.RemoveAt``1(``0[],System.Int32,System.Boolean)">
+            <summary>
+            Removes a value at the specified index in the source array.
+            </summary>
+            <typeparam name="T">The type of array elements.</typeparam>
+            <param name="source">The source array.</param>
+            <param name="index">The index where a value will be removed.</param>
+            <param name="isVirtualArray">Indicates if the array is virtual, i.e. its length can be bigger than the element count.</param>
+            <returns>The resulting new array.</returns>
+        </member>
+        <member name="T:NLight.Collections.BufferManager`1">
+            <summary>
+            Represents a buffer manager.
+            </summary>
+            <remarks>
+            This class maintains a set of large segments and gives clients pieces of these
+            segments that they can use as buffers. An alternative to this would be to
+            create many small arrays which then need to be maintained. In comparaison, 
+            using this class should be slightly both easier and more efficient because by creating only 
+            a few very large objects, it will force these objects to be placed on the Large Object Heap (LOH).
+            Since the objects are on the LOH, they are not subject to compacting, an expensive operation
+            which would require an update of all GC roots - as would be the case with lots of smaller arrays
+            that are allocated in the normal heap.
+            </remarks>
+        </member>
+        <member name="F:NLight.Collections.BufferManager`1._chunkPerSegmentCount">
+            <summary>
+            Contains the number of chunks to create per segment.
+            </summary>
+        </member>
+        <member name="F:NLight.Collections.BufferManager`1._chunkSize">
+            <summary>
+            Contains the size of each chunk.
+            </summary>
+        </member>
+        <member name="F:NLight.Collections.BufferManager`1._segmentSize">
+            <summary>
+            Contains the size of a segment (_chunkPerSegmentCount * _chunkSize).
+            </summary>
+        </member>
+        <member name="F:NLight.Collections.BufferManager`1._availableBuffers">
+            <summary>
+            Contains the available buffers.
+            </summary>
+        </member>
+        <member name="F:NLight.Collections.BufferManager`1._segments">
+            <summary>
+            Contains the allocated segments.
+            </summary>
+        </member>
+        <member name="M:NLight.Collections.BufferManager`1.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the BufferManager class.
+            </summary>
+            <param name="chunkPerSegmentCount">The number of chunks to create per segment.</param>
+            <param name="chunkSize">The size of each chunk.</param>
+        </member>
+        <member name="M:NLight.Collections.BufferManager`1.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the BufferManager class.
+            </summary>
+            <param name="chunkPerSegmentCount">The number of chunks to create per segment.</param>
+            <param name="chunkSize">The size of each chunk.</param>
+            <param name="initialSegmentCount">The initial number of segments to create.</param>
+        </member>
+        <member name="P:NLight.Collections.BufferManager`1.AvailableBufferCount">
+            <summary>
+            Gets the current number of buffers available.
+            </summary>
+        </member>
+        <member name="P:NLight.Collections.BufferManager`1.TotalBufferSize">
+            <summary>
+            Gets the total size of all buffers.
+            </summary>
+        </member>
+        <member name="M:NLight.Collections.BufferManager`1.Request">
+            <summary>
+            Requests a buffer from the manager.
+            </summary>
+            <returns>A new uninitialized buffer.</returns>
+            <remarks>It is the client's responsibility to release the buffer after usage.</remarks>
+        </member>
+        <member name="M:NLight.Collections.BufferManager`1.Release(System.ArraySegment{`0})">
+            <summary>
+            Releases a buffer and returns it to the manager.
+            </summary>
+            <param name="buffer">The buffer to release.</param>
+            <remarks>
+            It is the client's responsibility to release the buffer after usage.
+            </remarks>
+        </member>
+        <member name="M:NLight.Collections.BufferManager`1.CreateNewSegment">
+            <summary>
+            Creates a new segment and makes its associated chunks available as buffers.
+            </summary>
+        </member>
+        <member name="M:NLight.Collections.EnumerableExtensions.ToIReadOnlyList``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Creates a read-only wrapper of a collection.
+            </summary>
+            <typeparam name="T">The type of the items in the collection.</typeparam>
+            <param name="items">The collection to convert.</param>
+            <returns>A read-only wrapper of <paramref name="items"/>.</returns>
+        </member>
+        <member name="M:NLight.Collections.EnumerableExtensions.ToIReadOnlyCollection``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Creates a read-only wrapper of a collection.
+            </summary>
+            <typeparam name="T">The type of the items in the collection.</typeparam>
+            <param name="items">The collection to convert.</param>
+            <returns>A read-only wrapper of <paramref name="items"/>.</returns>
+        </member>
+        <member name="T:NLight.Core.BinaryHelper">
+            <summary>
+            Contains useful functions for manipulating bits.
+            </summary>
+        </member>
+        <member name="M:NLight.Core.BinaryHelper.RotateLeft(System.Int32,System.Int32)">
+            <summary>
+            Rotates the bits to the left.
+            </summary>
+            <param name="value">The value to rotate.</param>
+            <param name="count">The number of bits to rotate.</param>
+            <returns>The value rotated by <paramref name="count"/> to the left.</returns>
+        </member>
+        <member name="M:NLight.Core.BinaryHelper.RotateRight(System.Int32,System.Int32)">
+            <summary>
+            Rotates the bits to the right.
+            </summary>
+            <param name="value">The value to rotate.</param>
+            <param name="count">The number of bits to rotate.</param>
+            <returns>The value rotated by <paramref name="count"/> to the right.</returns>
+        </member>
+        <member name="M:NLight.Core.BinaryHelper.Reverse(System.Int64,System.Int32)">
+            <summary>
+            Reverses the number of significant bits specified.
+            </summary>
+            <param name="value">The value to reverse.</param>
+            <param name="significantBitCount">The number of significant bits to reverse.</param>
+            <returns>The <paramref name="value"/> with its <paramref name="significantBitCount"/> reversed.</returns>
+            <example>
+            Example, if the input is 376, with significantBitCount=11, the output is 244 (decimal, base 10).
+            
+            376 = 00000101111000
+            244 = 00000011110100
+            
+            Example, if the input is 900, with significantBitCount=11, the output is 270.
+            
+            900 = 00001110000100
+            270 = 00000100001110
+            
+            Example, if the input is 900, with significantBitCount=12, the output is 540.
+            
+            900 = 00001110000100
+            540 = 00001000011100
+            
+            Example, if the input is 154, with significantBitCount=4, the output is 5.
+            
+            154 = 00000010011010
+            005 = 00000000000101
+            </example>
+        </member>
+        <member name="T:NLight.Core.Buffer`1">
+            <summary>
+            Represents a data buffer.
+            </summary>
+            <typeparam name="T">The type of the data contained in the buffer.</typeparam>
+        </member>
+        <member name="M:NLight.Core.Buffer`1.#ctor(System.Int32,System.Func{`0[],System.Int32,System.Int32},System.Collections.Generic.IEqualityComparer{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NLight.Core.Buffer`1"/> class.
+            </summary>
+            <param name="capacity">The buffer capacity.</param>
+            <param name="fillCallback">
+            	The function that will be used to fill the buffer.
+            	The function takes the buffer array and the offset where filling will begin and returns the number of values that were obtained.
+            </param>
+            <param name="bookmarkComparer">The <see cref="T:System.Collections.Generic.IEqualityComparer`1"/> that will be used to search bookmarks.</param>
+        </member>
+        <member name="P:NLight.Core.Buffer`1.Item(System.Int32)">
+            <summary>
+            Gets the value at the specified index.
+            </summary>
+        </member>
+        <member name="P:NLight.Core.Buffer`1.Current">
+            <summary>
+            Gets the value at the current position.
+            </summary>
+        </member>
+        <member name="P:NLight.Core.Buffer`1.RawData">
+            <summary>
+            Gets the raw buffer data.
+            </summary>
+        </member>
+        <member name="P:NLight.Core.Buffer`1.Capacity">
+            <summary>
+            Gets the buffer capacity.
+            </summary>
+        </member>
+        <member name="P:NLight.Core.Buffer`1.Length">
+            <summary>
+            Gets the current length of the buffer data.
+            </summary>
+        </member>
+        <member name="P:NLight.Core.Buffer`1.Position">
+            <summary>
+            Gets or sets the current position inside the buffer.
+            </summary>
+        </member>
+        <member name="P:NLight.Core.Buffer`1.Bookmarks">
+            <summary>
+            Gets a table of position bookmarks inside the buffer.
+            </summary>
+        </member>
+        <member name="M:NLight.Core.Buffer`1.EnsureHasData">
+            <summary>
+            Ensures the buffer has data.
+            </summary>
+            <returns><c>true</c> if the buffer has data; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:NLight.Core.Buffer`1.Clear(System.Boolean)">
+            <summary>
+            Clears the buffer by setting its length to 0, and also clears the raw data array.
+            </summary>
+        </member>
+        <member name="M:NLight.Core.Buffer`1.Fill(System.Int32)">
+            <summary>
+            Fills the buffer with new data, but keeps <paramref name="keepCount"/> values.
+            </summary>
+            <param name="keepCount">The number of values to keep.</param>
+            <returns><c>true</c> if the buffer has data; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:NLight.Core.EnumHelper">
+            <summary>
+            Contains useful functions to manipulate and parse <see cref="T:System.Enum"/> values.
+            </summary>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.CheckEnumType(System.Type)">
+            <summary>
+            Ensures <paramref name="enumType"/> is a valid <see cref="T:System.Enum"/> type.
+            </summary>
+            <param name="enumType">The type to validate.</param>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.GetEnumInfo(System.Type)">
+            <summary>
+            Gets the <see cref="T:NLight.Core.EnumHelper.EnumInfo"/> structure for the specified <paramref name="enumType"/>.
+            </summary>
+            <param name="enumType">The <see cref="T:System.Enum"/> type to inspect.</param>
+            <returns>The <see cref="T:NLight.Core.EnumHelper.EnumInfo"/> structure for the provided <paramref name="enumType"/>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.GetName``1(``0)">
+            <summary>
+            Gets the name associated with the specified <paramref name="value"/>.
+            </summary>
+            <typeparam name="T">The <see cref="T:System.Enum"/> type.</typeparam>
+            <param name="value">The value to inspect.</param>
+            <returns>The name associated with the specified <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.GetName(System.Type,System.Object)">
+            <summary>
+            Gets the name associated with the specified <paramref name="value"/>.
+            </summary>
+            <param name="enumType">The <see cref="T:System.Enum"/> type.</param>
+            <param name="value">The value to inspect.</param>
+            <returns>The name associated with the specified <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.GetNames``1">
+            <summary>
+            Gets all the names of all the values of the specified <see cref="T:System.Enum"/> type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The <see cref="T:System.Enum"/> type.</typeparam>
+            <returns>All the names of all the values of the specified <see cref="T:System.Enum"/> type <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.GetNames(System.Type)">
+            <summary>
+            Gets all the names of all the values of the specified <see cref="T:System.Enum"/> type <paramref name="enumType"/>.
+            </summary>
+            <param name="enumType">The <see cref="T:System.Enum"/> type.</param>
+            <returns>All the names of all the values of the specified <see cref="T:System.Enum"/> type <paramref name="enumType"/>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.GetValues``1">
+            <summary>
+            Gets all the values of the specified <see cref="T:System.Enum"/> type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The <see cref="T:System.Enum"/> type.</typeparam>
+            <returns>All the values of the specified <see cref="T:System.Enum"/> type <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.GetValues(System.Type)">
+            <summary>
+            Gets all the values of the specified <see cref="T:System.Enum"/> type <paramref name="enumType"/>.
+            </summary>
+            <param name="enumType">The <see cref="T:System.Enum"/> type.</param>
+            <returns>All the values of the specified <see cref="T:System.Enum"/> type <paramref name="enumType"/>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.IsDefined``1(System.Object)">
+            <summary>
+            Determines whether the specified value is defined in the <see cref="T:System.Enum"/> type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The <see cref="T:System.Enum"/> type.</typeparam>
+            <param name="value">The value to inspect.</param>
+            <returns><c>true</c> if the specified value is defined in the <see cref="T:System.Enum"/> type <typeparamref name="T"/>; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.IsDefined(System.Type,System.Object)">
+            <summary>
+            Determines whether the specified value is defined in the <see cref="T:System.Enum"/> type <paramref name="enumType"/>.
+            </summary>
+            <param name="enumType">The <see cref="T:System.Enum"/> type.</param>
+            <param name="value">The value to inspect.</param>
+            <returns><c>true</c> if the specified value is defined in the <see cref="T:System.Enum"/> type <paramref name="enumType"/>; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.Parse``1(System.String,System.Boolean)">
+            <summary>
+            Parses the specified input string and converts it to the <see cref="T:System.Enum"/> type <typeparamref name="T"/>.
+            Only supports integer enumeration values.
+            </summary>
+            <typeparam name="T">The <see cref="T:System.Enum"/> type.</typeparam>
+            <param name="input">The input string to parse.</param>
+            <param name="ignoreCase">if set to <c>true</c> ignore the case of the <paramref name="input"/>.</param>
+            <returns>A value of the <see cref="T:System.Enum"/> type <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.TryParse``1(System.String,System.Boolean,``0@)">
+            <summary>
+            Tries to parse the specified input string and then convert it to the <see cref="T:System.Enum"/> type <typeparamref name="T"/>.
+            Only supports integer enumeration values.
+            </summary>
+            <typeparam name="T">The <see cref="T:System.Enum"/> type.</typeparam>
+            <param name="input">The input string to parse.</param>
+            <param name="ignoreCase">if set to <c>true</c> ignore the case of the <paramref name="input"/>.</param>
+            <param name="value">A value of the <see cref="T:System.Enum"/> type <typeparamref name="T"/>.</param>
+            <returns><c>true</c> if the conversion succeeded; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.Parse(System.Type,System.String,System.Boolean)">
+            <summary>
+            Parses the specified input string and converts it to the <see cref="T:System.Enum"/> type <paramref name="enumType"/>.
+            Only supports integer enumeration values.
+            </summary>
+            <param name="enumType">The <see cref="T:System.Enum"/> type.</param>
+            <param name="input">The input string to parse.</param>
+            <param name="ignoreCase">if set to <c>true</c> ignore the case of the <paramref name="input"/>.</param>
+            <returns>A value of the <see cref="T:System.Enum"/> type <paramref name="enumType"/>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.TryParse(System.Type,System.String,System.Boolean,System.Object@)">
+            <summary>
+            Tries to parse the specified input string and then convert it to the <see cref="T:System.Enum"/> type <paramref name="enumType"/>.
+            Only supports integer enumeration values.
+            </summary>
+            <param name="enumType">The <see cref="T:System.Enum"/> type.</param>
+            <param name="input">The input string to parse.</param>
+            <param name="ignoreCase">if set to <c>true</c> ignore the case of the <paramref name="input"/>.</param>
+            <param name="value">A value of the <see cref="T:System.Enum"/> type <paramref name="enumType"/>.</param>
+            <returns><c>true</c> if the conversion succeeded; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.CheckEnumerationValue(System.Object,System.Boolean,System.Boolean,System.String,System.Object[])">
+            <summary>
+            Checks if the specified <paramref name="value"/> is a valid enumeration value.
+            Only supports integer enumeration values.
+            </summary>
+            <param name="value">The value to validate.</param>
+            <param name="isFlags">Indicates if the provided values be combined as flags.</param>
+            <param name="throwOnError">Indicates if an <see cref="T:System.ArgumentException"/> will be thrown if the <paramref name="value"/> is invalid.</param>
+            <param name="argumentName">An optional argument name that will be used when throwing the <see cref="T:System.ArgumentException"/>.</param>
+            <param name="validValues">The enumeration values that will be used for the validation.</param>
+            <returns><c>true</c> if the <paramref name="value"/> is valid; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.CheckEnumerationValueByMinMax(System.Object,System.Boolean,System.String,System.Object,System.Object)">
+            <summary>
+            Checks if the specified <paramref name="value"/> is a valid enumeration value.
+            Only supports integer enumeration values.
+            </summary>
+            <param name="value">The value to validate.</param>
+            <param name="throwOnError">Indicates if an <see cref="T:System.ArgumentException"/> will be thrown if the <paramref name="value"/> is invalid.</param>
+            <param name="argumentName">An optional argument name that will be used when throwing the <see cref="T:System.ArgumentException"/>.</param>
+            <param name="minValue">The minimum valid enumeration value.</param>
+            <param name="maxValue">The maximum valid enumeration value.</param>
+            <returns><c>true</c> if the <paramref name="value"/> is valid; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:NLight.Core.EnumHelper.CheckEnumerationValueByMask(System.Object,System.Boolean,System.String,System.Object)">
+            <summary>
+            Checks if the specified <paramref name="value"/> is a valid enumeration value.
+            Only supports integer enumeration values.
+            </summary>
+            <param name="value">The value to validate.</param>
+            <param name="throwOnError">Indicates if an <see cref="T:System.ArgumentException"/> will be thrown if the <paramref name="value"/> is invalid.</param>
+            <param name="argumentName">An optional argument name that will be used when throwing the <see cref="T:System.ArgumentException"/>.</param>
+            <param name="mask">A bit flag mask of the valid enumeration values.</param>
+            <returns><c>true</c> if the <paramref name="value"/> is valid; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:NLight.Data.DbTypeExtensions">
+            <summary>
+            Contains methods to convert <see cref="T:System.Data.DbType"/> to and from various types.
+            </summary>
+        </member>
+        <member name="M:NLight.Data.DbTypeExtensions.ToType(System.Data.DbType)">
+            <summary>
+            Converts the specified <see cref="T:System.Data.DbType"/> to the corresponding <see cref="T:System.Type"/>.
+            </summary>
+            <param name="dbType">The <see cref="T:System.Data.DbType"/> to convert.</param>
+            <returns>The corresponding <see cref="T:System.Type"/>.</returns>
+        </member>
+        <member name="M:NLight.Data.DbTypeExtensions.ToDbType(System.Type)">
+            <summary>
+            Converts from the specified <see cref="T:System.Type"/> to the corresponding <see cref="T:System.Data.DbType"/>.
+            </summary>
+            <param name="type">The <see cref="T:System.Type"/> to convert.</param>
+            <returns>The corresponding <see cref="T:System.Data.DbType"/>.</returns>
+        </member>
+        <member name="T:NLight.Data.Db.DbDataSessionState">
+            <summary>
+            Contains the data session state for a database.
+            </summary>
+        </member>
+        <member name="P:NLight.Data.Db.DbDataSessionState.ConnectionHandledByReader">
+            <summary>
+            Gets a value indicating whether the database connection will be closed by a data reader.
+            </summary>
+        </member>
+        <member name="P:NLight.Data.Db.DbDataSessionState.Connection">
+            <summary>
+            Gets the database connection.
+            </summary>
+        </member>
+        <member name="P:NLight.Data.Db.DbDataSessionState.Transaction">
+            <summary>
+            Gets the database transaction.
+            </summary>
+        </member>
+        <member name="T:NLight.Data.Db.DbDataSource">
+            <summary>
+            Contains the methods required to execute transacted operations against a database.
+            See <see cref="T:NLight.Transactions.TransactionManager"/>.
+            </summary>
+        </member>
+        <member name="M:NLight.Data.Db.DbDataSource.Execute``1(System.String,System.Func{System.Data.Common.DbConnection},System.Func{NLight.Transactions.DataSession{NLight.Data.Db.DbDataSessionState},System.Threading.Tasks.Task{``0}})">
+            <summary>
+            Executes the specified operation.
+            </summary>
+            <typeparam name="T">The type of the operation result.</typeparam>
+            <param name="transactionGroupName">The name of the transaction group.</param>
+            <param name="createConnection">The function that will create the database connection.</param>
+            <param name="operation">The operation to execute.</param>
+        </member>
+        <member name="M:NLight.Data.Db.DbDataSource.ExecuteSelect``1(System.String,System.Func{System.Data.Common.DbConnection},System.Func{NLight.Transactions.DataSession{NLight.Data.Db.DbDataSessionState},System.Threading.Tasks.Task{System.Data.Common.DbDataReader}},System.Func{System.Data.IDataRecord,``0})">
+            <summary>
+            Executes the specified select operation.
+            </summary>
+            <typeparam name="T">The type of the records returned by the select operation.</typeparam>
+            <param name="transactionGroupName">The name of the transaction group.</param>
+            <param name="createConnection">The function that will create the database connection.</param>
+            <param name="operation">The operation to execute.</param>
+            <param name="recordConverter">The function that will convert the records to <typeparamref name="T"/>.</param>
+            <returns>The records returned by the select operation.</returns>
+        </member>
+        <member name="M:NLight.Data.Db.DbDataSource.ExecuteSelect(System.String,System.Func{System.Data.Common.DbConnection},System.Func{NLight.Transactions.DataSession{NLight.Data.Db.DbDataSessionState},System.Threading.Tasks.Task{System.Data.Common.DbDataReader}})">
+            <summary>
+            Executes the specified select operation.
+            </summary>
+            <param name="transactionGroupName">The name of the transaction group.</param>
+            <param name="createConnection">The function that will create the database connection.</param>
+            <param name="operation">The operation to execute.</param>
+            <returns>The <see cref="T:System.Data.Common.DbDataReader"/> returned by the select operation.</returns>
+        </member>
+        <member name="M:NLight.Data.Db.DbDataSource.ExecuteSelect``1(System.String,System.Func{System.Data.Common.DbConnection},System.Func{NLight.Transactions.DataSession{NLight.Data.Db.DbDataSessionState},System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}})">
+            <summary>
+            Executes the specified select operation.
+            </summary>
+            <typeparam name="T">The type of the records returned by the select operation.</typeparam>
+            <param name="transactionGroupName">The name of the transaction group.</param>
+            <param name="createConnection">The function that will create the database connection.</param>
+            <param name="operation">The operation to execute.</param>
+            <returns>The records returned by the select operation.</returns>
+        </member>
+        <member name="M:NLight.Data.Db.DbDataSource.ExecuteScalar``1(System.String,System.Func{System.Data.Common.DbConnection},System.Func{NLight.Transactions.DataSession{NLight.Data.Db.DbDataSessionState},System.Threading.Tasks.Task{``0}})">
+            <summary>
+            Execute the specified select operation.
+            </summary>
+            <typeparam name="T">The type of the value returned by the select operation.</typeparam>
+            <param name="transactionGroupName">The name of the transaction group.</param>
+            <param name="createConnection">The function that will create the database connection.</param>
+            <param name="operation">The operation to execute.</param>
+            <returns>The value returned by the select operation.</returns>
+        </member>
+        <member name="M:NLight.Data.Db.DbDataSource.BeginSession(NLight.Transactions.TransactionContext,System.Func{System.Data.Common.DbConnection})">
+            <summary>
+            Begins the data session.
+            </summary>
+            <param name="transactionContext">The current transaction context.</param>
+            <param name="createConnection">The function that will create the database connection.</param>
+        </member>
+        <member name="M:NLight.Data.Db.DbDataSource.CommitSession(NLight.Transactions.DataSession{NLight.Data.Db.DbDataSessionState})">
+            <summary>
+            Commits the data session.
+            </summary>
+            <param name="session">The data session.</param>
+        </member>
+        <member name="M:NLight.Data.Db.DbDataSource.RollbackSession(NLight.Transactions.DataSession{NLight.Data.Db.DbDataSessionState})">
+            <summary>
+            Rollbacks the data session.
+            </summary>
+            <param name="session">The data session.</param>
+        </member>
+        <member name="M:NLight.Data.Db.DbDataSource.EndSession(NLight.Transactions.DataSession{NLight.Data.Db.DbDataSessionState})">
+            <summary>
+            Ends the data session.
+            </summary>
+            <param name="session">The data session.</param>
+        </member>
+        <member name="T:NLight.Data.Linq.LinqDataSessionState">
+            <summary>
+            Contains the data session state for a LINQ to SQL operation.
+            </summary>
+        </member>
+        <member name="P:NLight.Data.Linq.LinqDataSessionState.ConnectionHandledByReader">
+            <summary>
+            Gets or sets a value indicating whether the connection is handled by the reader.
+            </summary>
+        </member>
+        <member name="P:NLight.Data.Linq.LinqDataSessionState.Context">
+            <summary>
+            Gets the LINQ <see cref="T:System.Data.Linq.DataContext"/>.
+            </summary>
+        </member>
+        <member name="T:NLight.Data.Linq.LinqDataSource">
+            <summary>
+            Contains the methods required to execute transacted operations against a LINQ <see cref="T:System.Data.Linq.DataContext"/>.
+            See <see cref="T:NLight.Transactions.TransactionManager"/>.
+            </summary>
+        </member>
+        <member name="M:NLight.Data.Linq.LinqDataSource.Execute``1(System.String,System.Func{System.Data.Linq.DataContext},System.Func{NLight.Transactions.DataSession{NLight.Data.Linq.LinqDataSessionState},System.Threading.Tasks.Task{``0}})">
+            <summary>
+            Executes the specified operation.
+            </summary>
+            <typeparam name="T">The type of the operation result.</typeparam>
+            <param name="transactionGroupName">The name of the transaction group.</param>
+            <param name="createDataContext">The function that will create the LINQ <see cref="T:System.Data.Linq.DataContext"/>.</param>
+            <param name="operation">The operation to execute.</param>
+        </member>
+        <member name="M:NLight.Data.Linq.LinqDataSource.ExecuteSelect``1(System.String,System.Func{System.Data.Linq.DataContext},System.Func{NLight.Transactions.DataSession,System.Threading.Tasks.Task{System.Linq.IQueryable{``0}}})">
+            <summary>
+            Executes the specified select operation.
+            </summary>
+            <typeparam name="T">The type of the records returned by the select operation.</typeparam>
+            <param name="transactionGroupName">The name of the transaction group.</param>
+            <param name="createDataContext">The function that will create the LINQ <see cref="T:System.Data.Linq.DataContext"/>.</param>
+            <param name="operation">The operation to execute.</param>
+            <returns>The records returned by the select operation.</returns>
+        </member>
+        <member name="M:NLight.Data.Linq.LinqDataSource.ExecuteScalar``1(System.String,System.Func{System.Data.Linq.DataContext},System.Func{NLight.Transactions.DataSession,System.Threading.Tasks.Task{``0}})">
+            <summary>
+            Execute the specified select operation.
+            </summary>
+            <typeparam name="T">The type of the value returned by the select operation.</typeparam>
+            <param name="transactionGroupName">The name of the transaction group.</param>
+            <param name="createDataContext">The function that will create the LINQ <see cref="T:System.Data.Linq.DataContext"/>.</param>
+            <param name="operation">The operation to execute.</param>
+            <returns>The value returned by the select operation.</returns>
+        </member>
+        <member name="M:NLight.Data.Linq.LinqDataSource.BeginSession(NLight.Transactions.TransactionContext,System.Func{System.Data.Linq.DataContext})">
+            <summary>
+            Begins the data session.
+            </summary>
+            <param name="transactionContext">The current transaction context.</param>
+            <param name="createDataContext">The function that will create the LINQ <see cref="T:System.Data.Linq.DataContext"/>.</param>
+        </member>
+        <member name="M:NLight.Data.Linq.LinqDataSource.CommitSession(NLight.Transactions.DataSession{NLight.Data.Linq.LinqDataSessionState})">
+            <summary>
+            Commits the data session.
+            </summary>
+            <param name="session">The data session.</param>
+        </member>
+        <member name="M:NLight.Data.Linq.LinqDataSource.RollbackSession(NLight.Transactions.DataSession{NLight.Data.Linq.LinqDataSessionState})">
+            <summary>
+            Rollbacks the data session.
+            </summary>
+            <param name="session">The data session.</param>
+        </member>
+        <member name="M:NLight.Data.Linq.LinqDataSource.EndSession(NLight.Transactions.DataSession{NLight.Data.Linq.LinqDataSessionState})">
+            <summary>
+            Ends the data session.
+            </summary>
+            <param name="session">The data session.</param>
+        </member>
+        <member name="T:NLight.Diagnostics.Benchmarking.Benchmark">
+            <summary>
+            Contains methods to execute a benchmark.
+            </summary>
+        </member>
+        <member name="M:NLight.Diagnostics.Benchmarking.Benchmark.Execute``1(System.String,NLight.Diagnostics.Benchmarking.BenchmarkOptions,``0,System.Action{System.Object,NLight.Diagnostics.Benchmarking.BenchmarkOptions,``0,System.Int64,NLight.Diagnostics.Benchmarking.BenchmarkResult},System.Action{``0})">
+            <summary>
+            Executes a benchmark.
+            </summary>
+            <typeparam name="TBenchmarkArgs">The type of class containing the benchmark arguments.</typeparam>
+            <param name="benchmarkName">The name of the benchmark.</param>
+            <param name="benchmarkOptions">The benchmark options.</param>
+            <param name="benchmarkArgs">The benchmark arguments.</param>
+            <param name="outputCallback">
+            	The benchmark output callback. Its arguments are:
+            	<list type="">
+            		<item>sender (an instance or the type of the class that executed the benchmark)</item>
+            		<item>benchmark options</item>
+            		<item>benchmark arguments</item>
+            		<item>current iteration index</item>
+            		<item>benchmark result</item>
+            	</list>
+            </param>
+            <param name="action">The operation to benchmark.</param>
+        </member>
+        <member name="T:NLight.Diagnostics.Benchmarking.BenchmarkOptions">
+            <summary>
+            Represents benchmark options.
+            </summary>
+        </member>
+        <member name="M:NLight.Diagnostics.Benchmarking.BenchmarkOptions.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NLight.Diagnostics.Benchmarking.BenchmarkOptions"/> class.
+            </summary>
+        </member>
+        <member name="P:NLight.Diagnostics.Benchmarking.BenchmarkOptions.ActionIterationCount">
+            <summary>
+            Gets or sets the action iteration count.
+            </summary>
+        </member>
+        <member name="P:NLight.Diagnostics.Benchmarking.BenchmarkOptions.ActionRepeatCount">
+            <summary>
+            Gets or sets the number of times the action will be repeated inside an iteration.
+            </summary>
+        </member>
+        <member name="P:NLight.Diagnostics.Benchmarking.BenchmarkOptions.BenchmarkIterationCount">
+            <summary>
+            Gets or sets the benchmark iteration count.
+            </summary>
+        </member>
+        <member name="P:NLight.Diagnostics.Benchmarking.BenchmarkOptions.ConcurrencyLevel">
+            <summary>
+            Gets or sets the concurrency level, i.e. the maximum number of actions to execute in parallel.
+            </summary>
+        </member>
+        <member name="T:NLight.Diagnostics.Benchmarking.BenchmarkResult">
+            <summary>
+            Represents a benchmark result.
+            </summary>
+        </member>
+        <member name="P:NLight.Diagnostics.Benchmarking.BenchmarkResult.Name">
+            <summary>
+            Gets the benchmark name.
+            </summary>
+        </member>
+        <member name="P:NLight.Diagnostics.Benchmarking.BenchmarkResult.UsedMemory">
+            <summary>
+            Gets the used memory.
+            </summary>
+        </member>
+        <member name="P:NLight.Diagnostics.Benchmarking.BenchmarkResult.GC0">
+            <summary>
+            Gets the number of first generation garbage collections that occurred.
+            </summary>
+        </member>
+        <member name="P:NLight.Diagnostics.Benchmarking.BenchmarkResult.GC1">
+            <summary>
+            Gets the number of second generation garbage collections that occurred.
+            </summary>
+        </member>
+        <member name="P:NLight.Diagnostics.Benchmarking.BenchmarkResult.GC2">
+            <summary>
+            Gets the number of third generation garbage collections that occurred.
+            </summary>
+        </member>
+        <member name="P:NLight.Diagnostics.Benchmarking.BenchmarkResult.Timer">
+            <summary>
+            Gets the timer used for the benchmark.
+            </summary>
+        </member>
+        <member name="T:NLight.Diagnostics.DebuggerTraceListener">
+            <summary>
+            A trace listener that will break in the debugger when the <see cref="T:System.Diagnostics.TraceEventType"/> is equal or lower 
+            than the value specified by <see cref="P:NLight.Diagnostics.DebuggerTraceListener.BreakOnEventType"/> (by default <see cref="F:System.Diagnostics.TraceEventType.Error"/>).
+            </summary>
+        </member>
+        <member name="T:NLight.Diagnostics.MemoryPressureManager">
+            <summary>
+            Manages the garbage collector memory pressure.
+            See <see cref="M:System.GC.AddMemoryPressure(System.Int64)"/> and <see cref="M:System.GC.RemoveMemoryPressure(System.Int64)"/>.
+            </summary>
+        </member>
+        <member name="M:NLight.Diagnostics.MemoryPressureManager.AddMemoryPressure(System.Int64)">
+            <summary>
+            Informs the runtime of a large allocation of unmanaged memory that should be taken into account when scheduling garbage collection.
+            </summary>
+            <param name="bytesAllocated">The incremental amount of unmanaged memory that has been allocated.</param>
+        </member>
+        <member name="M:NLight.Diagnostics.MemoryPressureManager.RemoveMemoryPressure(System.Int64)">
+            <summary>
+            Informs the runtime that unmanaged memory has been released and no longer needs to be taken into account when scheduling garbage collection.
+            </summary>
+            <param name="bytesAllocated">The amount of unmanaged memory that has been released.</param>
+        </member>
+        <member name="T:NLight.IO.Interop.Win32CopyEx">
+            <summary>
+            PInvoke wrapper for CopyEx
+            http://msdn.microsoft.com/en-us/library/windows/desktop/aa363852.aspx
+            </summary>
+        </member>
+        <member name="T:NLight.IO.Text.DuplicateRecordColumnException">
+            <summary>
+            Represents the exception that is thrown when a duplicate column is found.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.DuplicateRecordColumnException._message">
+            <summary>
+            Contains the message that describes the error.
+            </summary>
+        </member>
+        <member name="M:NLight.IO.Text.DuplicateRecordColumnException.#ctor">
+            <summary>
+            Initializes a new instance of the DuplicateColumnNameException class.
+            </summary>
+        </member>
+        <member name="M:NLight.IO.Text.DuplicateRecordColumnException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the DuplicateColumnNameException class.
+            </summary>
+            <param name="columnName">The column name.</param>
+        </member>
+        <member name="M:NLight.IO.Text.DuplicateRecordColumnException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the DuplicateColumnNameException class.
+            </summary>
+            <param name="columnName">The column name.</param>
+            <param name="innerException">The exception that is the cause of the current exception.</param>
+        </member>
+        <member name="M:NLight.IO.Text.DuplicateRecordColumnException.#ctor(System.String,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the DuplicateColumnNameException class.
+            </summary>
+            <param name="columnName">The column name.</param>
+            <param name="message">The message that describes the error.</param>
+            <param name="innerException">The exception that is the cause of the current exception.</param>
+        </member>
+        <member name="M:NLight.IO.Text.DuplicateRecordColumnException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the DuplicateColumnNameException class with serialized data.
+            </summary>
+            <param name="info">The <see cref="T:SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:StreamingContext"/> that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="P:NLight.IO.Text.DuplicateRecordColumnException.ColumnName">
+            <summary>
+            Gets the column name.
+            </summary>
+        </member>
+        <member name="P:NLight.IO.Text.DuplicateRecordColumnException.Message">
+            <summary>
+            Gets a message that describes the current exception.
+            </summary>
+        </member>
+        <member name="M:NLight.IO.Text.DuplicateRecordColumnException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            When overridden in a derived class, sets the <see cref="T:SerializationInfo"/> with information about the exception.
+            </summary>
+            <param name="info">The <see cref="T:SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:StreamingContext"/> that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="T:NLight.IO.Text.MalformedRecordException">
+            <summary>
+            Represents the exception that is thrown when a record is malformed.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.MalformedRecordException._message">
+            <summary>
+            Contains the message that describes the error.
+            </summary>
+        </member>
+        <member name="M:NLight.IO.Text.MalformedRecordException.#ctor">
+            <summary>
+            Initializes a new instance of the MalformedRecordException class.
+            </summary>
+        </member>
+        <member name="M:NLight.IO.Text.MalformedRecordException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the MalformedRecordException class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="M:NLight.IO.Text.MalformedRecordException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the MalformedRecordException class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+            <param name="innerException">The exception that is the cause of the current exception.</param>
+        </member>
+        <member name="M:NLight.IO.Text.MalformedRecordException.#ctor(System.String,System.Int32,System.Int64,System.Int32)">
+            <summary>
+            Initializes a new instance of the MalformedRecordException class.
+            </summary>
+            <param name="dataBuffer">The data buffer content when the error occurred.</param>
+            <param name="bufferPosition">The current position in the data buffer content.</param>
+            <param name="currentRecordIndex">The current record index.</param>
+            <param name="currentColumnIndex">The current column index.</param>
+        </member>
+        <member name="M:NLight.IO.Text.MalformedRecordException.#ctor(System.String,System.Int32,System.Int64,System.Int32,System.Exception)">
+            <summary>
+            Initializes a new instance of the MalformedRecordException class.
+            </summary>
+            <param name="dataBuffer">The data buffer content when the error occurred.</param>
+            <param name="bufferPosition">The current position in the data buffer content.</param>
+            <param name="currentRecordIndex">The current record index.</param>
+            <param name="currentColumnIndex">The current column index.</param>
+            <param name="innerException">The exception that is the cause of the current exception.</param>
+        </member>
+        <member name="M:NLight.IO.Text.MalformedRecordException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the MalformedRecordException class with serialized data.
+            </summary>
+            <param name="info">The <see cref="T:SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:StreamingContext"/> that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="P:NLight.IO.Text.MalformedRecordException.DataBuffer">
+            <summary>
+            Gets the data buffer content when the error occurred.
+            </summary>
+        </member>
+        <member name="P:NLight.IO.Text.MalformedRecordException.BufferPosition">
+            <summary>
+            Gets the current position in the data buffer.
+            </summary>
+        </member>
+        <member name="P:NLight.IO.Text.MalformedRecordException.CurrentRecordIndex">
+            <summary>
+            Gets the current record index.
+            </summary>
+        </member>
+        <member name="P:NLight.IO.Text.MalformedRecordException.CurrentColumnIndex">
+            <summary>
+            Gets the current column index.
+            </summary>
+        </member>
+        <member name="P:NLight.IO.Text.MalformedRecordException.Message">
+            <summary>
+            Gets a message that describes the current exception.
+            </summary>
+        </member>
+        <member name="M:NLight.IO.Text.MalformedRecordException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            When overridden in a derived class, sets the <see cref="T:SerializationInfo"/> with information about the exception.
+            </summary>
+            <param name="info">The <see cref="T:SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:StreamingContext"/> that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="T:NLight.IO.Text.MissingRecordFieldAction">
+            <summary>
+            Specifies the action to take when a field is missing.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.MissingRecordFieldAction.HandleAsParseError">
+            <summary>
+            Handles as a parsing error.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.MissingRecordFieldAction.ReturnEmptyValue">
+            <summary>
+            Returns an empty value ("" for <see cref="T:System.String"/> or 0 for value types).
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.MissingRecordFieldAction.ReturnNullValue">
+            <summary>
+            Returns a <c>null</c> value. The type of the missing field must be nullable.
+            </summary>
+        </member>
+        <member name="T:NLight.IO.Text.MissingRecordFieldException">
+            <summary>
+            Represents the exception that is thrown when there is a missing field in a record.
+            </summary>
+            <remarks>
+            MissingFieldException would have been a better name, but there is already a <see cref="T:System.MissingFieldException"/>.
+            </remarks>
+        </member>
+        <member name="M:NLight.IO.Text.MissingRecordFieldException.#ctor">
+            <summary>
+            Initializes a new instance of the MissingRecordFieldException class.
+            </summary>
+        </member>
+        <member name="M:NLight.IO.Text.MissingRecordFieldException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the MissingRecordFieldException class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="M:NLight.IO.Text.MissingRecordFieldException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the MissingRecordFieldException class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+            <param name="innerException">The exception that is the cause of the current exception.</param>
+        </member>
+        <member name="M:NLight.IO.Text.MissingRecordFieldException.#ctor(System.String,System.Int32,System.Int64,System.Int32)">
+            <summary>
+            Initializes a new instance of the MissingRecordFieldException class.
+            </summary>
+            <param name="rawData">The raw data when the error occurred.</param>
+            <param name="currentPosition">The current position in the raw data.</param>
+            <param name="currentRecordIndex">The current record index.</param>
+            <param name="currentFieldIndex">The current field index.</param>
+        </member>
+        <member name="M:NLight.IO.Text.MissingRecordFieldException.#ctor(System.String,System.Int32,System.Int64,System.Int32,System.Exception)">
+            <summary>
+            Initializes a new instance of the MissingRecordFieldException class.
+            </summary>
+            <param name="rawData">The raw data when the error occurred.</param>
+            <param name="currentPosition">The current position in the raw data.</param>
+            <param name="currentRecordIndex">The current record index.</param>
+            <param name="currentFieldIndex">The current field index.</param>
+            <param name="innerException">The exception that is the cause of the current exception.</param>
+        </member>
+        <member name="M:NLight.IO.Text.MissingRecordFieldException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the MissingRecordFieldException class with serialized data.
+            </summary>
+            <param name="info">The <see cref="T:SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:StreamingContext"/> that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="T:NLight.IO.Text.ParseErrorAction">
+            <summary>
+            Specifies the action to take when a parsing error has occurred.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.ParseErrorAction.RaiseEvent">
+            <summary>
+            Raises a parsing error event.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.ParseErrorAction.SkipToNextLine">
+            <summary>
+            Tries to advance to next line.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.ParseErrorAction.ThrowException">
+            <summary>
+            Throws an exception.
+            </summary>
+        </member>
+        <member name="T:NLight.IO.Text.ParseErrorEventArgs">
+            <summary>
+            Provides data for a record parsing error event.
+            </summary>
+        </member>
+        <member name="M:NLight.IO.Text.ParseErrorEventArgs.#ctor(NLight.IO.Text.MalformedRecordException,NLight.IO.Text.ParseErrorAction)">
+            <summary>
+            Initializes a new instance of the ParseErrorEventArgs class.
+            </summary>
+            <param name="error">The error that occurred.</param>
+            <param name="action">The action to take.</param>
+        </member>
+        <member name="P:NLight.IO.Text.ParseErrorEventArgs.Error">
+            <summary>
+            Gets the error that occurred.
+            </summary>
+        </member>
+        <member name="P:NLight.IO.Text.ParseErrorEventArgs.Action">
+            <summary>
+            Gets or sets the action to take.
+            </summary>
+        </member>
+        <member name="T:NLight.IO.Text.ReadResult">
+            <summary>
+            Represents the result of a read operation.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.ReadResult.Success">
+            <summary>
+            The read operation was successful.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.ReadResult.EndOfFile">
+            <summary>
+            No data has been read because the end of the file is reached.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.ReadResult.ParseError">
+            <summary>
+            A parsing error occurred.
+            </summary>
+        </member>
+        <member name="T:NLight.IO.Text.TextRecordReader.Validations">
+            <summary>
+            Defines the reader validations.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.TextRecordReader.Validations.None">
+            <summary>
+            No validation.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.TextRecordReader.Validations.IsNotDisposed">
+            <summary>
+            Validates that the reader is not disposed.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.TextRecordReader.Validations.HasCurrentRecord">
+            <summary>
+            Validates that the reader has a current record (first validates that the reader is not disposed).
+            </summary>
+        </member>
+        <member name="M:NLight.IO.Text.TextRecordReader`1.HandleParseError(NLight.IO.Text.MalformedRecordException)">
+            <summary>
+            Handles a parsing error.
+            </summary>
+            <param name="error">The parsing error that occurred.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="error"/> is <c>null</c>.
+            </exception>
+        </member>
+        <member name="M:NLight.IO.Text.TextRecordReader`1.IsWhiteSpace(System.Char)">
+            <summary>
+            Indicates whether the specified Unicode character is categorized as white space.
+            </summary>
+            <param name="c">A Unicode character.</param>
+            <returns><c>true</c> if <paramref name="c"/> is white space; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:NLight.IO.Text.TextRecordReader`1.FastStringList">
+            <summary>
+            Specialized list that does not check arguments and does not release references when clearing.
+            It is safe to use as a text record holder, but not as a general purpose collection.
+            </summary>
+        </member>
+        <member name="T:NLight.IO.Text.TextRecordWriter.Validations">
+            <summary>
+            Defines the writer validations.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.TextRecordWriter.Validations.None">
+            <summary>
+            No validation.
+            </summary>
+        </member>
+        <member name="F:NLight.IO.Text.TextRecordWriter.Validations.IsNotDisposed">
+            <summary>
+            Validates that the writer is not disposed.
+            </summary>
+        </member>
+        <member name="T:NLight.Resources.ExceptionMessages">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Collections_SourceCannotContainDuplicateKey">
+            <summary>
+              Looks up a localized string similar to The source argument contains duplicate keys..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Core_CannotKeepAllBufferElements">
+            <summary>
+              Looks up a localized string similar to Cannot fill a buffer and keep all its elements at the same time..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Core_ExpressionDoesNotAccessProperty">
+            <summary>
+              Looks up a localized string similar to The member access expression does not access a property..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Core_InvalidEnumArgument">
+            <summary>
+              Looks up a localized string similar to &apos;{0}&apos; is not a valid enumeration value..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Core_NotAnEnumType">
+            <summary>
+              Looks up a localized string similar to &apos;{0}&apos; is not an Enum type..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Core_NotMemberAccessExpression">
+            <summary>
+              Looks up a localized string similar to The expression is not a member access expression..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.IO_CannotMovePreviousRecordInForwardOnly">
+            <summary>
+              Looks up a localized string similar to Cannot move to a previous record in forward-only mode..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.IO_ColumnNotFound">
+            <summary>
+              Looks up a localized string similar to A column named &apos;{0}&apos; was not found..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.IO_DuplicateColumnName">
+            <summary>
+              Looks up a localized string similar to A column with the name &apos;{0}&apos; already exists..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.IO_MalformedRecordException">
+            <summary>
+              Looks up a localized string similar to The record at index &apos;{0}&apos; appears to be corrupt. Current column index: &apos;{1}&apos;. Current position: &apos;{2}&apos;. Current raw data : &apos;{3}&apos;..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.IO_NoColumnDefined">
+            <summary>
+              Looks up a localized string similar to At least one column must exists in the column collection. Columns may be added to the collection using the Columns property and its Add method..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.IO_NoCurrentRecord">
+            <summary>
+              Looks up a localized string similar to No current record..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.IO_NotEnoughSpaceInArray">
+            <summary>
+              Looks up a localized string similar to The number of fields in the record is greater than the available space from index to the end of the destination array..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.IO_ParseErrorActionInvalidInsideParseErrorEvent">
+            <summary>
+              Looks up a localized string similar to &apos;{0}&apos; is not a valid ParseErrorAction while inside a ParseError event..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.IO_ParseErrorActionNotSupported">
+            <summary>
+              Looks up a localized string similar to &apos;{0}&apos; is not a supported ParseErrorAction..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Net_NoInterfaceInSameNetwork">
+            <summary>
+              Looks up a localized string similar to There is no interface in the same network of the target IP address ({0}:{1}) for UDP listening..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Reactive_SequenceAlreadyCompleted">
+            <summary>
+              Looks up a localized string similar to Sequence already completed..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Reactive_SequenceAlreadyCompletedWithError">
+            <summary>
+              Looks up a localized string similar to Sequence already completed with an error..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Text_CannotConvertToDataType">
+            <summary>
+              Looks up a localized string similar to Could not convert &apos;{0}&apos; to type &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Text_ConversionNotSupported">
+            <summary>
+              Looks up a localized string similar to The conversion from type &apos;{0}&apos; to &apos;{1}&apos; is not supported..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Threading_UnderlyingThreadNotAlive">
+            <summary>
+              Looks up a localized string similar to The underlying thread (Name = &apos;{0}&apos;, ManagedThreadId = &apos;{1}&apos;) is no longer alive..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Transactions_IncoherentContextTransition">
+            <summary>
+              Looks up a localized string similar to The requested transaction context state transition to &apos;{1}&apos; is not coherent with the current state &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.ExceptionMessages.Transactions_InvalidTransactionContextState">
+            <summary>
+              Looks up a localized string similar to The transaction context should be in one of the following states: {0}..
+            </summary>
+        </member>
+        <member name="T:NLight.Resources.LogMessages">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.LogMessages.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.LogMessages.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.LogMessages.Reactive_ErrorWhenNotifyingObserver">
+            <summary>
+              Looks up a localized string similar to Error when calling {0} on observer &apos;{1}&apos;. Exception: &apos;{2}&apos;..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.LogMessages.Shared_ExceptionDuringFinalization">
+            <summary>
+              Looks up a localized string similar to An exception occurred during finalization: {0}.
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.LogMessages.Shared_InstanceNotDisposedCorrectly">
+            <summary>
+              Looks up a localized string similar to Instance was not disposed correctly. Stack trace: {0}.
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.LogMessages.Shared_NonProcessedItemsAfterDisposeTimeout">
+            <summary>
+              Looks up a localized string similar to When disposing, timeout of &apos;{0}&apos; expired before all elements have been processed..
+            </summary>
+        </member>
+        <member name="P:NLight.Resources.LogMessages.Shared_NonProcessedItemsWhenDisposing">
+            <summary>
+              Looks up a localized string similar to When disposing, {0} element(s) remained in internal queue..
+            </summary>
+        </member>
+        <member name="T:NLight.Text.ConversionOption">
+            <summary>
+            Specifies the available options when converting a value.
+            </summary>
+        </member>
+        <member name="F:NLight.Text.ConversionOption.Loose">
+            <summary>
+            Loose conversion, meaning the converter will try to guess the input format.
+            </summary>
+        </member>
+        <member name="F:NLight.Text.ConversionOption.Strict">
+            <summary>
+            Strict conversion, meaning the converter will use only the specified input formats.
+            </summary>
+        </member>
+        <member name="T:NLight.Text.Encodings.FastAsciiEncoding">
+            <summary>
+            Represents a faster ASCII character encoding that does not handle code pages and fallback.
+            </summary>
+        </member>
+        <member name="T:NLight.Text.Parsing.EscapedStringParser">
+            <summary>
+            Contains methods to parse an escaped string.
+            </summary>
+        </member>
+        <member name="F:NLight.Text.Parsing.EscapedStringParser.EscapeCharacter">
+            <summary>
+            Defines the escape character.
+            </summary>
+        </member>
+        <member name="M:NLight.Text.Parsing.EscapedStringParser.TryParseEscapedChar(NLight.Core.Buffer{System.Char},System.Char@)">
+            <summary>
+            Tries to parse an escaped character.
+            </summary>
+            <param name="buffer">The data to parse.</param>
+            <param name="value">The parsed value if successful.</param>
+            <returns><c>true</c> if an escaped character was successfully parsed; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:NLight.Text.Parsing.EscapedStringParser.TryParseEscapedChar(System.String,System.Int32@,System.Int32,System.Char@)">
+            <summary>
+            Tries to parse an escaped character.
+            </summary>
+            <param name="data">The data to parse.</param>
+            <param name="startIndex">The starting position where the parsing will occur.</param>
+            <param name="endIndex">The end position where the parsing must stop, whether successful or not.</param>
+            <param name="value">The parsed value if successful.</param>
+            <returns><c>true</c> if an escaped character was successfully parsed; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:NLight.Text.Parsing.EscapedStringParser.TryParseEscapedChar(System.Char[],System.Int32@,System.Int32,System.Char@)">
+            <summary>
+            Tries to parse an escaped character.
+            </summary>
+            <param name="data">The data to parse.</param>
+            <param name="startIndex">The starting position where the parsing will occur.</param>
+            <param name="endIndex">The end position where the parsing must stop, whether successful or not.</param>
+            <param name="value">The parsed value if successful.</param>
+            <returns><c>true</c> if an escaped character was successfully parsed; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:NLight.Text.Parsing.EscapedStringParser.TryParseEscapedChar(System.Collections.Generic.IReadOnlyList{System.Char},System.Int32@,System.Int32,System.Char@)">
+            <summary>
+            Tries to parse an escaped character.
+            </summary>
+            <param name="data">The data to parse.</param>
+            <param name="startIndex">The starting position where the parsing will occur.</param>
+            <param name="endIndex">The end position where the parsing must stop, whether successful or not.</param>
+            <param name="value">The parsed value if successful.</param>
+            <returns><c>true</c> if an escaped character was successfully parsed; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:NLight.Text.Parsing.NumberParser">
+            <summary>
+            Contains methods to parse numbers.
+            </summary>
+        </member>
+        <member name="M:NLight.Text.Parsing.NumberParser.ConvertHexDigit(System.Char)">
+            <summary>
+            Converts a char to its corresponding hexadecimal digit.
+            </summary>
+            <param name="value">The char to convert.</param>
+            <returns>The corresponding hexadecimal digit.</returns>
+        </member>
+        <member name="M:NLight.Text.Parsing.NumberParser.ConvertDecimalDigit(System.Char)">
+            <summary>
+            Converts a char to its corresponding decimal digit.
+            </summary>
+            <param name="value">The char to convert.</param>
+            <returns>The corresponding decimal digit.</returns>
+        </member>
+        <member name="M:NLight.Text.Parsing.NumberParser.ConvertOctalDigit(System.Char)">
+            <summary>
+            Converts a char to its corresponding octal digit.
+            </summary>
+            <param name="value">The char to convert.</param>
+            <returns>The corresponding octal digit.</returns>
+        </member>
+        <member name="T:NLight.Text.TrimmingOptions">
+            <summary>
+            Specifies the options to be used when trimming a string.
+            </summary>
+        </member>
+        <member name="F:NLight.Text.TrimmingOptions.None">
+            <summary>
+            No trimming.
+            </summary>
+        </member>
+        <member name="F:NLight.Text.TrimmingOptions.Start">
+            <summary>
+            Trimming is done at the start of the string only.
+            </summary>
+        </member>
+        <member name="F:NLight.Text.TrimmingOptions.End">
+            <summary>
+            Trimming is done at the end of the string only.
+            </summary>
+        </member>
+        <member name="F:NLight.Text.TrimmingOptions.Both">
+            <summary>
+            Trimming is done at both the start and the end of the string.
+            </summary>
+        </member>
+        <member name="P:NLight.Transactions.DataSession.TransactionContext">
+            <summary>
+            Gets the associated transaction context.
+            </summary>
+        </member>
+        <member name="P:NLight.Transactions.DataSession.TransactionGroupName">
+            <summary>
+            Gets the associated transaction group name.
+            </summary>
+        </member>
+        <member name="P:NLight.Transactions.DataSession.Commit">
+            <summary>
+            Gets or sets the commit transaction action.
+            </summary>
+        </member>
+        <member name="P:NLight.Transactions.DataSession.Rollback">
+            <summary>
+            Gets or sets the rollback transaction action.
+            </summary>
+        </member>
+        <member name="P:NLight.Transactions.DataSession.End">
+            <summary>
+            Gets or sets the end connection action.
+            </summary>
+        </member>
+        <member name="T:NLight.Transactions.DataSession`1">
+            <summary>
+            Represents a data session associated with a transaction context.
+            </summary>
+        </member>
+        <member name="P:NLight.Transactions.DataSession`1.State">
+            <summary>
+            Gets or sets the data session state.
+            </summary>
+        </member>
+        <member name="T:NLight.Transactions.TransactionContext">
+            <summary>
+            Represents a transaction context.
+            </summary>
+        </member>
+        <member name="E:NLight.Transactions.TransactionContext.Created">
+            <summary>
+            Occurs when a new transaction context has been created.
+            </summary>
+        </member>
+        <member name="E:NLight.Transactions.TransactionContext.StateChanged">
+            <summary>
+            Occurs when a transaction context state has changed.
+            </summary>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContext.#ctor(NLight.Transactions.TransactionContextAffinity)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NLight.Transactions.TransactionContext"/> class.
+            </summary>
+            <param name="affinity">The transaction context affinity.</param>
+        </member>
+        <member name="P:NLight.Transactions.TransactionContext.CurrentTransactionContext">
+            <summary>
+            Gets the current transaction context.
+            </summary>
+        </member>
+        <member name="P:NLight.Transactions.TransactionContext.Affinity">
+            <summary>
+            Gets the affinity of the transaction context.
+            </summary>
+        </member>
+        <member name="P:NLight.Transactions.TransactionContext.IsolationLevel">
+            <summary>
+            Gets or sets the transaction locking behavior for the connection.
+            </summary>
+        </member>
+        <member name="P:NLight.Transactions.TransactionContext.State">
+            <summary>
+            Gets the current state of the transaction context.
+            </summary>
+        </member>
+        <member name="P:NLight.Transactions.TransactionContext.StateFromChildren">
+            <summary>
+            Gets or sets the state from children.
+            </summary>
+        </member>
+        <member name="P:NLight.Transactions.TransactionContext.Parent">
+            <summary>
+            Gets the parent of the transaction context.
+            </summary>
+        </member>
+        <member name="P:NLight.Transactions.TransactionContext.IsController">
+            <summary>
+            Gets a value indicating whether this instance is a controlling transaction context.
+            </summary>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContext.GetController">
+            <summary>
+            Gets the controlling transaction context.
+            </summary>
+            <returns>The controlling transaction context.</returns>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContext.OnStateChanged(NLight.Transactions.TransactionContextState,NLight.Transactions.TransactionContextState)">
+            <summary>
+            Raises the <see cref="E:NLight.Transactions.TransactionContext.StateChanged"/> event.
+            </summary>
+            <param name="previousState">The previous transaction context state.</param>
+            <param name="newState">The new transaction context state.</param>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContext.Enter">
+            <summary>
+            Enters the transaction context. It will become the new current transaction context.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            The requested transaction context state change is invalid.
+            </exception>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContext.VoteCommit">
+            <summary>
+            Votes commit for the currently executing operation. A rollback must not have been voted before.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            The requested transaction context state change is invalid.
+            </exception>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContext.VoteCommitFromChild">
+            <summary>
+            Casts the commit vote on parent from a child.
+            </summary>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContext.VoteRollback">
+            <summary>
+            Votes rollback for the currently executing operation.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            The requested transaction context state change is invalid.
+            </exception>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContext.VoteRollbackFromChild">
+            <summary>
+            Casts the rollback vote on parent from a child.
+            </summary>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContext.Exit">
+            <summary>
+            Exits the transaction context. Its commit or rollback status becomes final.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            The requested transaction context state change is invalid.
+            </exception>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContext.Parent_TransactionContextStateChanged(System.Object,NLight.Transactions.TransactionContextStateChangedEventArgs)">
+            <summary>
+            Handles the parent transaction context's <see cref="E:NLight.Transactions.TransactionContext.StateChanged"/> event.
+            </summary>
+            <param name="sender">The object that raised the event.</param>
+            <param name="e">The <see cref="T:NLight.Transactions.TransactionContextStateChangedEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContext.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContext.Dispose(System.Boolean)">
+            <summary>
+            Releases resources.
+            </summary>
+            <param name="disposing"><c>true</c> if this instance is disposed manually; <c>false</c> if it is disposed during finalization.</param>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContext.Finalize">
+            <summary>
+            Releases unmanaged resources and performs other cleanup operations before the instance is reclaimed by garbage collection.
+            </summary>
+        </member>
+        <member name="T:NLight.Transactions.TransactionContextAffinity">
+            <summary>
+            Specifies the transaction context affinities.
+            </summary>
+        </member>
+        <member name="F:NLight.Transactions.TransactionContextAffinity.NotSupported">
+            <summary>
+            Creates the transaction context with no governing transaction.
+            </summary>
+        </member>
+        <member name="F:NLight.Transactions.TransactionContextAffinity.Required">
+            <summary>
+            Shares a transaction, if one exists, otherwise creates a new transaction.
+            </summary>
+        </member>
+        <member name="F:NLight.Transactions.TransactionContextAffinity.RequiresNew">
+            <summary>
+            Creates the transaction context with a new transaction, regardless of the state of the current context.
+            </summary>
+        </member>
+        <member name="T:NLight.Transactions.TransactionContextCreatedEventArgs">
+            <summary>
+            Provides data for the <see cref="E:NLight.Transactions.TransactionContext.Created"/> event.
+            </summary>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContextCreatedEventArgs.#ctor(NLight.Transactions.TransactionContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NLight.Transactions.TransactionContextCreatedEventArgs"/> class.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="P:NLight.Transactions.TransactionContextCreatedEventArgs.NewTransactionContext">
+            <summary>
+            Gets the newly created transaction context.
+            </summary>
+        </member>
+        <member name="T:NLight.Transactions.TransactionContextState">
+            <summary>
+            Specifies the states in which a transaction context can be.
+            </summary>
+        </member>
+        <member name="F:NLight.Transactions.TransactionContextState.Created">
+            <summary>
+            The transaction context has been created, but has not yet registered itself as current context.
+            </summary>
+        </member>
+        <member name="F:NLight.Transactions.TransactionContextState.Entered">
+            <summary>
+            The transaction context is active.
+            </summary>
+        </member>
+        <member name="F:NLight.Transactions.TransactionContextState.ToBeCommitted">
+            <summary>
+            The transaction context has been voted for commit.
+            </summary>
+        </member>
+        <member name="F:NLight.Transactions.TransactionContextState.ToBeRollbacked">
+            <summary>
+            The transaction context has been voted for rollback.
+            </summary>
+        </member>
+        <member name="F:NLight.Transactions.TransactionContextState.Exited">
+            <summary>
+            The transaction context has exited.
+            </summary>
+        </member>
+        <member name="T:NLight.Transactions.TransactionContextStateChangedEventArgs">
+            <summary>
+            Provides data for the <see cref="E:NLight.Transactions.TransactionContext.StateChanged"/> event.
+            </summary>
+        </member>
+        <member name="M:NLight.Transactions.TransactionContextStateChangedEventArgs.#ctor(NLight.Transactions.TransactionContextState,NLight.Transactions.TransactionContextState)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NLight.Transactions.TransactionContextStateChangedEventArgs"/> class.
+            </summary>
+            <param name="oldState">The old transaction context state.</param>
+            <param name="newState">The new transaction context state.</param>
+        </member>
+        <member name="P:NLight.Transactions.TransactionContextStateChangedEventArgs.OldState">
+            <summary>
+            Gets the old transaction context state.
+            </summary>
+        </member>
+        <member name="P:NLight.Transactions.TransactionContextStateChangedEventArgs.NewState">
+            <summary>
+            Gets the new transaction context state.
+            </summary>
+        </member>
+        <member name="T:NLight.Transactions.TransactionManager">
+            <summary>
+            Represents the transaction manager responsible for executing all transacted operations.
+            </summary>
+        </member>
+        <member name="M:NLight.Transactions.TransactionManager.EnsureInitialize">
+            <summary>
+            A call to this method before any transaction context creation is required to ensure that the transaction context creation event is hooked properly in a thread-safe manner.
+            </summary>
+        </member>
+        <member name="M:NLight.Transactions.TransactionManager.Execute``2(System.String,System.Func{NLight.Transactions.TransactionContext,System.Threading.Tasks.Task{``0}},System.Func{NLight.Transactions.DataSession{``0},System.Threading.Tasks.Task},System.Func{NLight.Transactions.DataSession{``0},System.Threading.Tasks.Task},System.Func{NLight.Transactions.DataSession{``0},System.Threading.Tasks.Task},System.Func{NLight.Transactions.DataSession{``0},System.Threading.Tasks.Task{``1}})">
+            <summary>
+            Executes the specified operation inside the current transaction context. If there is no context, a new one will be created with a <see cref="F:NLight.Transactions.TransactionContextAffinity.NotSupported"/> affinity.
+            </summary>
+            <typeparam name="TState">The type of the data session state.</typeparam>
+            <typeparam name="TResult">The type of the operation result.</typeparam>
+            <param name="transactionGroupName">The transaction group name.</param>
+            <param name="begin">The action to execute when the transaction context begins (before any operation).</param>
+            <param name="commit">The action to execute when committing the transaction context.</param>
+            <param name="rollback">The action to execute when rollbacking the transaction context.</param>
+            <param name="end">The action to execute when the transaction context ends (after all operations).</param>
+            <param name="operation">The operation to execute inside the current transaction context.</param>
+            <returns>The result of the operation.</returns>
+        </member>
+    </members>
+</doc>
